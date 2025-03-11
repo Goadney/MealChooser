@@ -7,17 +7,27 @@
 			{% for r in repas %}
 
 				<div class="bg-white p-4 w-1/8 h-auto">
-					<p>{{ r.name }}</p>
-					<p>{{ r.duree }}</p>
-					<p>{{ r.weekend }}</p>
-					{% for saison in r.getSaisons %}
-						<p>{{saison.name }}</p>
+					<p class="text-center">{{ r.name|capitalize }}</p>
+					<img src="{{ asset('images/plats.jpg') }}" alt="">
+					<p>Type de plat :
+						{{ r.type }}</p>
+					<p>Durée de préparation :
+						{{ r.duree }}</p>
+					<p>Plat de weekend :
+						{{ r.weekend == true ? 'Oui' : 'Non' }}</p>
+					<p>Saisonalité :
+						{% for saison in r.getSaisons %}
+							{{saison.name }}</p>
 					{% endfor %}
 					{% for ing in r.getIngredients %}
 						<p>{{ing.name }}</p>
 					{% endfor %}
 
-					<a href="{{ path('app_repas_show', {'slug': r.slug}) }}">GO</a>
+					<a href="{{ path('app_repas_show', {'slug': r.slug}) }}">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewbox="0 0 16 16">
+							<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+						</svg>
+					</a>
 
 				</div>
 			{% endfor %}

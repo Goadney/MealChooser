@@ -18,7 +18,7 @@ class RepasRepository extends ServiceEntityRepository
     }
     public function getBySlug($slug){return $this->findOneBy(['slug' => $slug]);}
 
-    public function findWithFilter(String $duree = null,int $weekend = null,Saisons $saison = null)
+    public function findWithFilter(String $duree = null,$weekend = null,Saisons $saison = null)
     {
         $query = $this->createQueryBuilder('r');
         if($saison != null){

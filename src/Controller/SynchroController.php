@@ -95,7 +95,11 @@ final class SynchroController extends AbstractController
                 }
             }
             
+
             //association saisons 
+            if($m['SAISONS (HIVER;ETE;AUTOMNE;PRINTEMPS)'] == null){
+                $m['SAISONS (HIVER;ETE;AUTOMNE;PRINTEMPS)'] = 'HIVER;ETE;AUTOMNE;PRINTEMPS';
+            }
             $saisons = explode(';', $m['SAISONS (HIVER;ETE;AUTOMNE;PRINTEMPS)']);
             foreach($saisons as $saison){
                 $saison = $this->saisonsRepository->findOneBy(['name' => $saison]);
