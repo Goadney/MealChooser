@@ -1,0 +1,26 @@
+<turbo-frame id="mealList">
+
+	<section class="p-8">
+		<p>Nombre de repas :
+			{{ repas|length }}</p>
+		<div class="flex gap-4 flex-wrap ">
+			{% for r in repas %}
+
+				<div class="bg-white p-4 w-1/8 h-auto">
+					<p>{{ r.name }}</p>
+					<p>{{ r.duree }}</p>
+					<p>{{ r.weekend }}</p>
+					{% for saison in r.getSaisons %}
+						<p>{{saison.name }}</p>
+					{% endfor %}
+					{% for ing in r.getIngredients %}
+						<p>{{ing.name }}</p>
+					{% endfor %}
+
+					<a href="{{ path('app_repas_show', {'slug': r.slug}) }}">GO</a>
+
+				</div>
+			{% endfor %}
+		</div>
+	</section>
+</turbo-frame>

@@ -4,25 +4,44 @@
 {% endblock %}
 
 {% block body %}
-
-	<section class="p-8">
-		<div class="flex gap-4 flex-wrap ">
-			{% for r in repas %}
-
-				<div class="bg-white p-4 w-1/8 h-auto">
-					<p>{{ r.name }}</p>
-					{% for saison in r.getSaisons %}
-						<p>{{saison.name }}</p>
-					{% endfor %}
-					{% for ing in r.getIngredients %}
-						<p>{{ing.name }}</p>
-					{% endfor %}
-
-					<a href="{{ path('app_repas_show', {'slug': r.slug}) }}">GO</a>
-
-				</div>
+	<form id="filterForm" action="{{ path('filter_repas') }}" method="get" data-turbo-frame="mealList">
+		<select name="filter_saison" id="filterSelectSaison">
+			<option value="">Sélectionner une saison</option>
+			{% for saison in saisons %}
+				<option value="{{ saison.name }}" {% if saison.name == app.request.query.get('filter_saison') %} selected {% endif %}>{{ saison.name }}</option>
 			{% endfor %}
-		</div>
-	</section>
+		</select>
 
+		<select name="filter_duree" id="filterSelectDuree">
+			<option value="">Sélectionner une durée</option>
+			{% for duree in durees %}
+				<option value="{{ duree }}" {% if duree == app.request.query.get('filter_duree') %} selected {% endif %}>{{ duree }}</option>
+			{% endfor %}
+		</select>
+
+		{# Pourquoi ce filtre ne marche pas #}
+		<select name="filter_weekend" id="filterSelectWeekend">
+			<option value="">Uniquement plat de weekend ?</option>
+			<option value="1" {% if "1" == app.request.query.get('filter_weekend') %} selected {% endif %}>Oui</option>
+			<option value="2" {% if "2" == app.request.query.get('filter_weekend') %} selected {% endif %}>Non</option>
+		</select>
+
+		<button type="submit">Filtrer</button>
+	</form>
+
+	{% include "partials/repas/_repas_list.html.twig" %}
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+		// Intercepter la soumission du formulaire
+document.getElementById('filterForm').addEventListener('submit', function (event) {
+event.preventDefault();
+
+Turbo.navigator.submitForm(this);
+
+});
+	</script>
 {% endblock %}

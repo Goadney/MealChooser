@@ -74,7 +74,9 @@ final class SynchroController extends AbstractController
                 default : $wk = false;break;
             }
             $repas->setWeekend($wk);
-            
+            if($wk){
+                dd($repas);
+            }
             //création des ingredients 
             //Garder tous les index de $m après l'index 4 
             $ingredients = array_slice($m, 5);
