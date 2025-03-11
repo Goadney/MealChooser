@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Repas |
+	{{ repas.name }}
+{% endblock %}
+
+{% block body %}
+
+	<section class="p-8">
+		<div class="flex gap-4 flex-wrap">
+
+			<div class="bg-white p-4 w-1/8 h-auto">
+				<p>{{ repas.name }}</p>
+				{% for saison in repas.getSaisons %}
+					<p>{{saison.name }}</p>
+				{% endfor %}
+				{% for ing in repas.getIngredients %}
+					<p>{{ing.name }}</p>
+				{% endfor %}
+
+
+			</div>
+		</div>
+	</section>
+
+{% endblock %}
