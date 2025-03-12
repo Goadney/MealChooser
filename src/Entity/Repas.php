@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\RepasRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\RepasRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: RepasRepository::class)]
 #[ORM\HasLifecycleCallbacks] 
@@ -49,14 +50,7 @@ class Repas
         $this->ingredients = new ArrayCollection();
         $this->saisons = new ArrayCollection();
     }
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function generateSlug(): void
-    {
-        if (empty($this->slug) && !empty($this->name)) {
-            $this->slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $this->name), '-'));
-        }
-    }
+
 
     public function getId(): ?int
     {
@@ -152,12 +146,7 @@ class Repas
         return $this->slug;
     }
 
-    public function setSlug(string $slug): static
-    {
-        $this->slug = $slug;
 
-        return $this;
-    }
 
     public function getType(): ?string
     {

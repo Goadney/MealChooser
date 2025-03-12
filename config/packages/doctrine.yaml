@@ -9,6 +9,7 @@ doctrine:
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
     orm:
+
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
         report_fields_where_declared: true
@@ -18,6 +19,12 @@ doctrine:
             Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
         auto_mapping: true
         mappings:
+            Gedmo:
+                type: attribute
+                prefix: Gedmo\Mapping\Annotation
+                dir: "%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Mapping/Annotation"
+                alias: Gedmo
+                is_bundle: false
             App:
                 type: attribute
                 is_bundle: false
