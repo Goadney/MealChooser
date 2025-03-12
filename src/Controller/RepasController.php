@@ -56,4 +56,13 @@ class RepasController extends AbstractController
             'repas' => $repas,
         ]);
     }
+
+    #[Route('/creer-repas', name: 'app_repas_create', methods: ['GET'])]
+    public function createMeal(Request $request, RepasRepository $repasRepository,SaisonsRepository $saisonsRepository): Response
+    {
+        
+        return $this->render('partials/repas/_repas_list.html.twig', [
+            'repas' => $repas,
+        ]);
+    }
 }

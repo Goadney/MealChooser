@@ -65,7 +65,7 @@ final class SynchroController extends AbstractController
                 $already_exists = true;
                 $repas = $repas_existant;
             }
-            
+            $repas->setType($m['TYPE (ENTREE,SAIN,GRAS,MOYEN)']);
             $repas->setSlug($this->slugger->generateSlug($m['NOM']));
             $repas->setDuree($m['DUREE (LONG,COURT,NORMAL)']);
             switch($m['WEEK_END (Y/N)']){
