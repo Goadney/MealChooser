@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RepasRepository::class)]
+#[ORM\HasLifecycleCallbacks] 
 class Repas
 {
     #[ORM\Id]
@@ -36,7 +37,8 @@ class Repas
     #[ORM\ManyToMany(targetEntity: Saisons::class, inversedBy: 'repas')]
     private Collection $saisons;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Gedmo\Slug(fields: ['name'])]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
@@ -46,6 +48,14 @@ class Repas
     {
         $this->ingredients = new ArrayCollection();
         $this->saisons = new ArrayCollection();
+    }
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function generateSlug(): void
+    {
+        if (empty($this->slug) && !empty($this->name)) {
+            $this->slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $this->name), '-'));
+        }
     }
 
     public function getId(): ?int

@@ -18,6 +18,15 @@ class RepasRepository extends ServiceEntityRepository
     }
     public function getBySlug($slug){return $this->findOneBy(['slug' => $slug]);}
 
+    public function save($entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     public function findWithFilter(String $duree = null,$weekend = null,Saisons $saison = null)
     {
         $query = $this->createQueryBuilder('r');

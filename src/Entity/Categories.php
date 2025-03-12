@@ -24,7 +24,8 @@ class Categories
     #[ORM\OneToMany(targetEntity: Ingredients::class, mappedBy: 'categorie', orphanRemoval: true)]
     private Collection $ingredients;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Gedmo\Slug(fields: ['name'])]
     private ?string $slug = null;
 
     public function __construct()

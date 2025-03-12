@@ -28,7 +28,8 @@ class Ingredients
     #[ORM\ManyToMany(targetEntity: Repas::class, mappedBy: 'ingredients')]
     private Collection $repas;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Gedmo\Slug(fields: ['name'])]
     private ?string $slug = null;
 
     public function __construct()

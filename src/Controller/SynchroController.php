@@ -66,7 +66,6 @@ final class SynchroController extends AbstractController
                 $repas = $repas_existant;
             }
             $repas->setType($m['TYPE (ENTREE,SAIN,GRAS,MOYEN)']);
-            $repas->setSlug($this->slugger->generateSlug($m['NOM']));
             $repas->setDuree($m['DUREE (LONG,COURT,NORMAL)']);
             switch($m['WEEK_END (Y/N)']){
                 case 'Y' : $wk = true;break;
@@ -142,7 +141,6 @@ final class SynchroController extends AbstractController
         if($exist == null){
             $new_object = $object;
             $new_object->setName($name);
-            $new_object->setSlug($slug);
             if($type == "ingredient"){
                 $new_object->setCategorie($categorie);
             }

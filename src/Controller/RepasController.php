@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Repas;
+use App\Form\RepasType;
 use App\Repository\RepasRepository;
 use App\Repository\SaisonsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -57,12 +59,23 @@ class RepasController extends AbstractController
         ]);
     }
 
-    #[Route('/creer-repas', name: 'app_repas_create', methods: ['GET'])]
-    public function createMeal(Request $request, RepasRepository $repasRepository,SaisonsRepository $saisonsRepository): Response
+
+    #[Route('/creer-repas', name: 'app_repas_create', methods: ['GET', 'POST'])]
+    public function createMeal(Request $request, RepasRepository $repasRepository, SluggerInterface $slugger): Response
     {
-        
-        return $this->render('partials/repas/_repas_list.html.twig', [
-            'repas' => $repas,
+        $repas = new Repas();
+        $form = $this->createForm(RepasType::class, $repas);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+    
+            $repasRepository->save($repas, true);
+            return $this->redirectToRoute('app_repas_list');
+        }
+    
+        return $this->render('repas/repas-create.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
+    
 }
