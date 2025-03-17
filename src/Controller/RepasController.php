@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Repas;
 use App\Form\RepasType;
+use App\Form\RepasModifyType;
 use App\Repository\RepasRepository;
 use App\Repository\SaisonsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -46,6 +47,7 @@ class RepasController extends AbstractController
     #[Route('/repas/{slug}', name: 'app_repas_show')]
     public function show(RepasRepository $repasRepository, string $slug): Response
     {
+        
         // Récupérer le repas correspondant au slug
         $repas = $repasRepository->findOneBy(['slug' => $slug]);
 
@@ -74,6 +76,26 @@ class RepasController extends AbstractController
         }
     
         return $this->render('repas/repas-create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/modify-repas/{slug}', name: 'app_repas_modify', methods: ['GET', 'POST'])]
+    public function modifyMeal(Request $request,RepasRepository $repasRepository, string $slug): Response
+    {
+        
+        $repas = $repasRepository->findOneBy(['slug' => $slug]);
+
+        $form = $this->createForm(RepasModifyType::class, $repas);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $repasRepository->save($repas, true);
+            return $this->redirectToRoute('app_repas_list');
+        }
+    
+        return $this->render('repas/repas-modify.html.twig', [
             'form' => $form->createView(),
         ]);
     }

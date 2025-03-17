@@ -52,7 +52,6 @@ final class SynchroController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
         $meals = $this->parseMealsXlsx('meals_');
-
         foreach($meals as $m){
             $repas = new Repas();
             $repas->setName($m['NOM']);
@@ -73,9 +72,7 @@ final class SynchroController extends AbstractController
                 default : $wk = false;break;
             }
             $repas->setWeekend($wk);
-            if($wk){
-                dd($repas);
-            }
+
             //création des ingredients 
             //Garder tous les index de $m après l'index 4 
             $ingredients = array_slice($m, 5);
@@ -116,7 +113,6 @@ final class SynchroController extends AbstractController
             $this->em->flush();
             
         }
-
         return $this->redirectToRoute('app_home'); 
        }
 
