@@ -91,13 +91,28 @@ class RepasController extends AbstractController
     
         if ($form->isSubmitted() && $form->isValid()) {
             
-            $repasRepository->save($repas, true);
+            $repasRepository->save($repas, false);
             return $this->redirectToRoute('app_repas_list');
         }
     
         return $this->render('repas/repas-modify.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+    #[Route('/delete-repas/{slug}', name: 'app_delete_repas', methods: 'DELETE')]
+    public function deleteMeal(Request $request,RepasRepository $repasRepository, EntityManagerInterface $entityManager, string $slug): Response
+    {
+        
+        $repas = $repasRepository->findOneBy(['slug' => $slug]);
+
+        if ($this->isCsrfTokenValid('delete-item', $request->request->get('_token'))) {
+            $entityManager->remove($repas);
+            $entityManager->flush();
+            
+        }
+
+        return $this->redirectToRoute('app_repas_list', [], Response::HTTP_SEE_OTHER);
+       
     }
     
 }

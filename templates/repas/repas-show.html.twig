@@ -20,6 +20,10 @@
 				{% endfor %}
 
 				<a href="{{ path('app_repas_modify', {'slug': repas.slug}) }}">Modifier</a>
+				<form action="{{ path('app_delete_repas', {'slug': repas.slug}) }}" method="DELETE">
+					<input type="hidden" name="_token" value="{{ csrf_token('delete-item') }}">
+					<button type="submit">Supprimer</button>
+				</form>
 			</div>
 		</div>
 	</section>
