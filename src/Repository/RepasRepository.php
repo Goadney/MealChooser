@@ -27,6 +27,14 @@ class RepasRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllRepasNoEntree(){ 
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.type != :type')
+            ->setParameter('type', 'ENTREE')
+            ->getQuery()
+            ->getResult();
+    }
+
 
     public function findWithFilter(String $duree = null,$weekend = null,Saisons $saison = null)
     {

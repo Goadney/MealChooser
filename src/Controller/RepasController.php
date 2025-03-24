@@ -63,7 +63,7 @@ class RepasController extends AbstractController
 
 
     #[Route('/creer-repas', name: 'app_repas_create', methods: ['GET', 'POST'])]
-    public function createMeal(Request $request, RepasRepository $repasRepository, SluggerInterface $slugger): Response
+    public function createMeal(Request $request, RepasRepository $repasRepository,EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $repas = new Repas();
         $form = $this->createForm(RepasType::class, $repas);
@@ -71,7 +71,8 @@ class RepasController extends AbstractController
     
         if ($form->isSubmitted() && $form->isValid()) {
     
-            $repasRepository->save($repas, true);
+            $entityManager->persist($repas);
+            $entityManager->flush($repas);
             return $this->redirectToRoute('app_repas_list');
         }
     
@@ -81,7 +82,7 @@ class RepasController extends AbstractController
     }
 
     #[Route('/modify-repas/{slug}', name: 'app_repas_modify', methods: ['GET', 'POST'])]
-    public function modifyMeal(Request $request,RepasRepository $repasRepository, string $slug): Response
+    public function modifyMeal(Request $request,RepasRepository $repasRepository,EntityManagerInterface $entityManager, string $slug): Response
     {
         
         $repas = $repasRepository->findOneBy(['slug' => $slug]);
@@ -91,7 +92,8 @@ class RepasController extends AbstractController
     
         if ($form->isSubmitted() && $form->isValid()) {
             
-            $repasRepository->save($repas, false);
+            $entityManager->persist($repas);
+            $entityManager->flush($repas);
             return $this->redirectToRoute('app_repas_list');
         }
     

@@ -1,0 +1,26 @@
+<turbo-frame id="mealList">
+
+	{% if repas|length > 0 %}
+		{% for repa in repas %}
+			<div class="flex gap-4 flex-wrap p-8 justify-center">
+				<h3>{{ repa.name }}</h3>
+			</div>
+		{% endfor %}
+	{% else %}
+
+		{% set jours_semaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'] %}
+		<form action="{{path('app_semaine_generer')}}" method="POST" data-turbo-frame="semaineList">
+			<div class="flex gap-4 flex-wrap p-8 justify-center">
+				{% for jour in jours_semaine %}
+					<div class="bg-white p-4 w-1/8 h-auto">
+						<h3>{{ jour }}</h3>
+					</div>
+
+				{% endfor %}
+			</div>
+
+			<button type="submit">Generer</button>
+		</form>
+	{% endif %}
+
+</turbo-frame>
